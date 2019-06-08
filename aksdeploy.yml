@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aks-deployment
+  labels:
+    app: aks
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: aks
+      labels:
+        app: aks
+    spec:
+      containers:
+      - name: aks
+        image: aksdemo.azurecr.io/aks:latest
+        imagePullPolicy: IfNotPresent
+      restartPolicy: Always
+  selector:
+    matchLabels:
+      app: aks
+
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: aks-service
+spec:
+  selector:
+    app: aks
+  ports:
+    - port: 80
+  type: NodePort
+  
+  
